@@ -1,3 +1,5 @@
+![alt text]([http://url/to/img.png](https://github.com/someengineername/tmuxconf/blob/main/Screenshot_4.png))
+
 Мой вариант конфига для работы с TMUX\
 Пайплайн установки:
 1. ln -s ./tmuxconf/.tmux.conf .tmux.conf\
