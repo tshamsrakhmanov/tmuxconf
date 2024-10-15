@@ -1,4 +1,4 @@
-![alt text](https://github.com/someengineername/tmuxconf/blob/main/Screenshot_4.png)
+![alt text](https://github.com/someengineername/tmuxconf/blob/main/preview.png)
 
 Мой вариант конфига для работы с TMUX\
 Пайплайн установки:
