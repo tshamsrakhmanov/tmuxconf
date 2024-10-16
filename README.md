@@ -1,6 +1,7 @@
 ![alt text](https://github.com/someengineername/tmuxconf/blob/main/preview.png)
 
 Мой вариант конфига для работы с TMUX\
+
 Пайплайн установки:
 1. ln -s ./tmuxconf/.tmux.conf .tmux.conf\
 (делаем ссылку на конфигурационный файл, который лежит совсем не по стандартному адресу но будет искаться по стандартному пути самим tmux-ом)
