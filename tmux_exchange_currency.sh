@@ -19,7 +19,7 @@ function create_file {
 function read_data {
 
 	# if date in current ".currency" file (or data/date) is broken - just remake file
-	# if OK - display currency value
+	# if OK - display currency value - else - just here a wrong comment for test commit
 	# if NOK - just remove @broken@ file and make a new one
 
 	if [[ "$(date +"%d-%m-%y")" = "$(cat ~/tmuxconf/.currency | grep "usd" | awk '{print$2}')" ]]; then
