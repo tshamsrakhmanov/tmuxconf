@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eou pipefail
 
 input_flag=$1
 
