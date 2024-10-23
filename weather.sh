@@ -1,9 +1,12 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
+input_flag=$1
+
 response=$(curl -s https://api.open-meteo.com/v1/forecast\?latitude\=56.863\&longitude\=53.1851\&current\=temperature_2m,apparent_temperature,weather_code,is_day\&timezone\=Europe%2FSamara)
 
-weather_code=$(echo "$response" | jq -r ".current.weather_code")
+#weather_code=$(echo "$response" | jq -r ".current.weather_code")
+weather_code=$(echo "$input_flag")
 temp=$(echo "$response" | jq -r ".current.temperature_2m" | cut -d '.' -f 1)
 appr_temp=$(echo "$response" | jq -r ".current.apparent_temperature" | cut -d '.' -f 1)
 is_day=$(echo "$response" | jq -r ".current.is_day")
@@ -16,31 +19,35 @@ freezing_rain_codes=(56 57 66 67)
 snow_codes=(71 73 75 77 85 86)
 thunder_codes=(95 96 99)
 
-if [[ ${rain_codes[@]} =~ $weather_code ]]; then
-weather_sign="\U1F327"
 
-elif [[ ${overcast_codes[@]} =~ $weather_code ]];then
-weather_sign="\U26C5"
+if   [[ ${overcast_codes[@]}      =~ $weather_code ]];then
+weather_sign="Облачно \U26C5"
 
-elif [[ ${fog_codes[@]} =~ $weather_code ]];then
-weather_sign="\U1F32B"
+elif [[ ${rain_codes[@]}          =~ $weather_code ]]; then
+weather_sign="Дождь \U1F327"
+
+#elif [[ ${overcast_codes[@]}      =~ $weather_code ]];then
+#weather_sign="Облачно \U26C5"
+
+elif [[ ${fog_codes[@]}           =~ $weather_code ]];then
+weather_sign="Туман \U1F32B"
 
 elif [[ ${freezing_rain_codes[@]} =~ $weather_code ]];then
-weather_sign="\U2744 \U1F327"
+weather_sign="Ледяной дождь \U2744 \U1F327"
 
-elif [[ ${snow_codes[@]} =~ $weather_code ]];then
-weather_sign="\U1F328"
+elif [[ ${snow_codes[@]}          =~ $weather_code ]];then
+weather_sign="Снег \U2744"
 
-elif [[ ${thunder_codes[@]} =~ $weather_code ]];then
-weather_sign="\U1F329"
+elif [[ ${thunder_codes[@]}       =~ $weather_code ]];then
+weather_sign="Гром \U1F329"
 
 elif [[ $weather_code -eq 0 ]];then
-weather_sign="\U2600"
+weather_sign="Ясно \U2600"
 
 else
 weather_sign="\U1F7E5"
 fi
 
-summary_string="$weather_sign $THERMO $temp($appr_temp)"
+summary_string="$weather_sign $THERMO $temp°C (Ощущ. $appr_temp°C)"
 
 printf "%b\n" "$summary_string"
