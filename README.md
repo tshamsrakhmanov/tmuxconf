@@ -1,4 +1,4 @@
-![alt text](https://github.com/someengineername/tmuxconf/blob/main/preview.png)
+![alt text](https://github.com/someengineername/tmuxconf/blob/main/preview1.png)
 
 Мой вариант конфига для работы с TMUX\
 
