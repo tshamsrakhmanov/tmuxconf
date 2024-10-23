@@ -7,29 +7,18 @@ weather_code=$(echo "$response" | jq -r ".current.weather_code")
 temp=$(echo "$response" | jq -r ".current.temperature_2m" | cut -d '.' -f 1)
 appr_temp=$(echo "$response" | jq -r ".current.apparent_temperature" | cut -d '.' -f 1)
 is_day=$(echo "$response" | jq -r ".current.is_day")
-#echo "Weather code: $weather_code"
-#echo "Temp: $temp"
-#echo "Apparent temperature: $appr_temp"
-#echo "Day? $is_day"
-
-weather_sign="\U231B"
 thermo="\U1F321"
 
 
 
 if [[ $weather_code -eq 61 ]]; then
+# weather is rainy
 weather_sign="\U1F327"
+else
+weather_sign="\U231B"
 fi
 
 
-
 summary_string="$weather_sign $thermo $temp($appr_temp)"
-
-
-
-
-
-
-
 
 printf "%b\n" "$summary_string"
