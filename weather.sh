@@ -8,11 +8,9 @@ response=$(curl -s https://api.open-meteo.com/v1/forecast\?latitude\=56.863\&lon
 
 weather_code=$(echo "$response" | jq -r ".current.weather_code")
 temp=$(echo "$response" | jq -r ".current.temperature_2m" | cut -d '.' -f 1)
-# option to include to summary string - temp as feels
-#appr_temp=$(echo "$response" | jq -r ".current.apparent_temperature" | cut -d '.' -f 1)
-is_day=$(echo "$response" | jq -r ".current.is_day")
 
 THERMO="\U1F321"
+
 rain_codes=(61 63 65 51 53 55 80 81 82)
 overcast_codes=(1 2 3)
 fog_codes=(45 48)
@@ -24,7 +22,7 @@ thunder_codes=(95 96 99)
 if   [[ ${overcast_codes[@]}      =~ $weather_code ]];then
 weather_sign="Облачно \U26C5"
 elif [[ ${rain_codes[@]}          =~ $weather_code ]];then
-weather_sign="Дождь \U1F327"
+weather_sign='Дождь \U1F327'
 elif [[ ${fog_codes[@]}           =~ $weather_code ]];then
 weather_sign="Туман \U1F32B"
 elif [[ ${freezing_rain_codes[@]} =~ $weather_code ]];then
@@ -35,15 +33,12 @@ elif [[ ${thunder_codes[@]}       =~ $weather_code ]];then
 weather_sign="Гром \U1F329"
 elif [[ $weather_code -eq 0 ]];then
 weather_sign="Ясно \U2600"
-
 else
 weather_sign="\U1F7E5"
 fi
 
-summary_string="$weather_sign $THERMO $temp°C"
-
 echo "CURRENT_DATE $(date +"%d-%m-%y-%H")" >> ~/tmuxconf/.weather
-printf "%b\n" "$summary_string" >> ~/tmuxconf/.weather
+echo "$weather_sign $THERMO $temp °C" >> ~/tmuxconf/.weather
 
 }
 
@@ -63,7 +58,7 @@ fi
 function reader {
 
 if [[ "$(date +"%d-%m-%y-%H")" = "$(cat ~/tmuxconf/.weather | grep "CURRENT_DATE" | awk '{print$2}')" ]]; then
-	echo $(tail -1 ~/tmuxconf/.weather)
+	printf '%b\n' "$(cat ~/tmuxconf/.weather)"
 else
 	rm ~/tmuxconf/.weather
 	record_data
